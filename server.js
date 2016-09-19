@@ -2,7 +2,7 @@ var express = require('express');
 var app = express();
 var fs = require("fs");
 
-const port=process.env.PORT ;
+const port=process.env.PORT;
 const host=process.env.IP;
 
 let lugares={};
