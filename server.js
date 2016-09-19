@@ -21,7 +21,7 @@ app.get('/', function (req, res) {
 
 app.get('/distritos', function (req, res) {
   res.json(lugares.reduce(function(previousValue,currentValue){
-    if (previousValue.indexOf(currentValue.distrito)!=-1)
+    if (previousValue.indexOf(currentValue.distrito)==-1)
       previousValue.push(currentValue.distrito);
     return previousValue;
   },[]));
@@ -30,7 +30,7 @@ app.get('/distritos', function (req, res) {
 app.get('/concelhos/:distrito', function (req, res) {
   res.json(lugares.reduce(function(previousValue,currentValue){
     if (currentValue.distrito==req.params.distrito && 
-        previousValue.indexOf(currentValue.concelho)!=-1)
+        previousValue.indexOf(currentValue.concelho)==-1)
       previousValue.push(currentValue.concelho);
     return previousValue;
   },[]));
@@ -40,7 +40,7 @@ app.get('/freguesias/:distrito/:concelho', function (req, res) {
   res.json(lugares.reduce(function(previousValue,currentValue){
     if (currentValue.distrito==req.params.distrito && 
         currentValue.concelho==req.params.concelho &&
-        previousValue.indexOf(currentValue.freguesia)!=-1)
+        previousValue.indexOf(currentValue.freguesia)==-1)
       previousValue.push(currentValue.freguesia);
     return previousValue;
   },[]));
@@ -51,7 +51,7 @@ app.get('/lugares/:distrito/:concelho/:freguesia', function (req, res) {
     if (currentValue.distrito==req.params.distrito && 
         currentValue.concelho==req.params.concelho &&
         currentValue.freguesia==req.params.freguesia &&
-        previousValue.indexOf(currentValue.lugar)!=-1)
+        previousValue.indexOf(currentValue.lugar)==-1)
       previousValue.push(currentValue.lugar);
     return previousValue;
   },[]));
