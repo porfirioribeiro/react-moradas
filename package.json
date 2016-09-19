@@ -1,0 +1,11 @@
+{
+  "name": "moradas",
+  "version": "0.0.0",
+  "description": "Serve adresses",
+  "main": "server.js",
+  "repository": "",
+  "author": "Porfirio Ribeiro <porfirioribeiro@gmail.com>",
+  "dependencies": {
+    "express": "^4.14.0"
+  }
+}
