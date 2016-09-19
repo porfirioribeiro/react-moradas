@@ -2,15 +2,61 @@ var express = require('express');
 var app = express();
 var fs = require("fs");
 
-app.get('/listUsers', function (req, res) {
-  // fs.readFile( __dirname + "/" + "users.json", 'utf8', function (err, data) {
-  //     console.log( data );
-  //     res.end( data );
-  // });
-  res.end("Worked");
+const port=process.env.PORT || 8080;
+const host=process.env.IP || "0.0.0.0";
+
+let lugares={};
+let lugaresJSON="";
+fs.readFile( __dirname + "/" + "Lugares.json", 'utf8', function (err, data) {
+  if (!err){
+    lugaresJSON=data;
+    lugares=JSON.parse(data);    
+  }
+});
+
+app.get('/', function (req, res) {
+  res.json(lugares);
 })
 
-var server = app.listen(process.env.PORT, process.env.IP, function () {
+app.get('/distritos', function (req, res) {
+  res.json(lugares.reduce(function(previousValue,currentValue){
+    if (!previousValue.includes(currentValue.distrito))
+      previousValue.push(currentValue.distrito);
+    return previousValue;
+  },[]));
+});
+
+app.get('/concelhos/:distrito', function (req, res) {
+  res.json(lugares.reduce(function(previousValue,currentValue){
+    if (currentValue.distrito==req.params.distrito && 
+        !previousValue.includes(currentValue.concelho))
+      previousValue.push(currentValue.concelho);
+    return previousValue;
+  },[]));
+});
+
+app.get('/freguesias/:distrito/:concelho', function (req, res) {
+  res.json(lugares.reduce(function(previousValue,currentValue){
+    if (currentValue.distrito==req.params.distrito && 
+        currentValue.concelho==req.params.concelho &&
+        !previousValue.includes(currentValue.freguesia))
+      previousValue.push(currentValue.freguesia);
+    return previousValue;
+  },[]));
+});
+
+app.get('/lugares/:distrito/:concelho/:freguesia', function (req, res) {
+  res.json(lugares.reduce(function(previousValue,currentValue){
+    if (currentValue.distrito==req.params.distrito && 
+        currentValue.concelho==req.params.concelho &&
+        currentValue.freguesia==req.params.freguesia &&
+        !previousValue.includes(currentValue.lugar))
+      previousValue.push(currentValue.lugar);
+    return previousValue;
+  },[]));
+});
+
+var server = app.listen(port, host, function () {
 
    var host = server.address().address
    var port = server.address().port
