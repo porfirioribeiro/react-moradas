@@ -21,7 +21,7 @@ app.get('/', function (req, res) {
 
 app.get('/distritos', function (req, res) {
   res.json(lugares.reduce(function(previousValue,currentValue){
-    if (!previousValue.includes(currentValue.distrito))
+    if (previousValue.indexof(currentValue.distrito))
       previousValue.push(currentValue.distrito);
     return previousValue;
   },[]));
