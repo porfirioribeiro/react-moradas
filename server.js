@@ -2,8 +2,8 @@ var express = require('express');
 var app = express();
 var fs = require("fs");
 
-const port=process.env.PORT || 8080;
-const host=process.env.IP || "0.0.0.0";
+const port=process.env.PORT ;
+const host=process.env.IP;
 
 let lugares={};
 let lugaresJSON="";
