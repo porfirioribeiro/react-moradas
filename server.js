@@ -4,8 +4,8 @@ var app = express();
 var cors = require('cors');
 var fs = require("fs");
 
-const port=process.env.PORT;
-const host=process.env.IP;
+const port=process.env.PORT || 8080;
+const host=process.env.IP || "0.0.0.0";
 
 let lugares={};
 let lugaresJSON="";
@@ -59,6 +59,15 @@ app.get('/lugares/:distrito/:concelho/:freguesia', function (req, res) {
     return previousValue;
   },[]));
 });
+
+app.get('/procura/:lugar', function (req, res) {
+  res.json(lugares.reduce(function(previousValue,currentValue){
+    if (currentValue.lugar.toLowerCase().indexOf(req.params.lugar.toLowerCase())!=-1)
+      previousValue.push(currentValue);
+    return previousValue;
+  },[]));
+});
+
 
 var server = app.listen(port, host, function () {
 
