@@ -1,6 +1,7 @@
 "use strict";
 var express = require('express');
 var app = express();
+var cors = require('cors');
 var fs = require("fs");
 
 const port=process.env.PORT;
@@ -14,6 +15,8 @@ fs.readFile( __dirname + "/" + "Lugares.json", 'utf8', function (err, data) {
     lugares=JSON.parse(data);    
   }
 });
+
+app.use(cors());
 
 app.get('/', function (req, res) {
   res.json(lugares);
