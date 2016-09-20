@@ -61,11 +61,17 @@ app.get('/lugares/:distrito/:concelho/:freguesia', function (req, res) {
 });
 
 app.get('/procura/:lugar', function (req, res) {
-  res.json(lugares.reduce(function(previousValue,currentValue){
-    if (currentValue.lugar.toLowerCase().indexOf(req.params.lugar.toLowerCase())!=-1)
-      previousValue.push(currentValue);
-    return previousValue;
-  },[]));
+    var results=[];
+    var found=0;
+    lugares.some(function(value){
+        if (value.lugar.toLowerCase().indexOf(req.params.lugar.toLowerCase())!=-1){
+            results.push(value);
+            found++;
+        }
+        return found >= 10
+    })
+    
+    res.json(results);
 });
 
 
