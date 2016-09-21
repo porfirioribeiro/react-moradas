@@ -18,9 +18,13 @@ fs.readFile( __dirname + "/" + "Lugares.json", 'utf8', function (err, data) {
 
 app.use(cors());
 
+//Serve our app
+app.use('/client',express.static('client/build'));
+app.use('/static',express.static('client/build/static'));
+
 app.get('/', function (req, res) {
   res.json(lugares);
-})
+});
 
 app.get('/distritos', function (req, res) {
   res.json(lugares.reduce(function(previousValue,currentValue){
