@@ -8,6 +8,7 @@ import LabeledSelect from './components/LabeledSelect'
 
 import _ from 'lodash'
 
+
 let origin=process.env.NODE_ENV!=="production"?"http://0.0.0.0:8080":location.origin;
 
 
@@ -15,7 +16,7 @@ const fetchJSON= (url)=>fetch(origin+"/"+url).then(r=>r.json());
 
 const stringListToOptions= sl=>sl.map((item)=>({label:item,value:item}));
 
-const adressToString=({distrito, concelho, freguesia, lugar})=> distrito+" / "+concelho+" / "+freguesia+" / "+lugar;
+const addressToString=({distrito, concelho, freguesia, lugar})=> distrito+" / "+concelho+" / "+freguesia+" / "+lugar;
 
 const unwrapValue=option=>
     (option==null)?
@@ -49,7 +50,7 @@ class App extends Component {
         if (!input) return Promise.resolve();
         console.log(input);
         return fetchJSON("procura/"+input).then(r=>{
-            let opts=r.map(value=>({label:adressToString(value),value}));
+            let opts=r.map(value=>({label:addressToString(value),value}));
             return Promise.resolve({options:opts})
         });
     };
