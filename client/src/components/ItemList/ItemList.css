@@ -1,0 +1,18 @@
+:root{
+    --List_item-height: 48px;
+}
+
+.List{
+    width: 100%;
+}
+
+.List_item{
+    height: var(--List_item-height);
+    line-height: var(--List_item-height);
+    text-align: left;
+    width: 100%;
+}
+
+.List_item:hover{
+    background-color: #999999;
+}

@@ -1,0 +1,34 @@
+
+:root{
+    --AutoComplete-height: 32px;
+    --AutoComplete_results-background: white;
+    --AutoComplete_results-border: 1px solid gray;
+}
+
+
+
+.AutoComplete{
+    height: var(--AutoComplete-height);
+    line-height: var(--AutoComplete-height);
+}
+
+.AutoComplete_input{
+    display: block;
+    width: 100%;
+    height: var(--AutoComplete-height);
+}
+
+.AutoComplete_results{
+    background: var(--AutoComplete_results-background);
+    border: var(--AutoComplete_results-border);
+}
+
+.AutoComplete_results_list{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.AutoComplete_result{
+    background: lightgray;
+}
