@@ -1,13 +1,11 @@
-export const keys= (val) => {
+export default {
+  keys: (val) => {
     const keys = Object.keys(val);
-    const promises = keys.map( (key) => val[key] );
-    return Promise.all(promises)
-        .then((results) =>
-            keys.reduce( (obj, key, i) => {
-                obj[key] = results[i];
-                return obj;
-            }, {})
-        );
+    return Promise.all(keys.map(key => val[key]))
+      .then(results =>
+        keys.reduce((obj, key, i) => ({
+          ...obj, [key]: results[i],
+        }), {}),
+      );
+  },
 };
-
-export default {keys}
