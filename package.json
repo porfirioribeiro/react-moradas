@@ -1,6 +1,6 @@
 {
   "name": "moradas",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Serve adresses",
   "main": "server.js",
   "repository": "",
