@@ -1,3 +1,3 @@
-/**
- * Created by porfirio on 14-01-2017.
- */
+import './AutoComplete.css';
+
+export { default } from './AutoComplete';

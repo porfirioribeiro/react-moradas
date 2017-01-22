@@ -1,0 +1,43 @@
+
+:root{
+    --AutoComplete-height: 32px;
+    --AutoComplete_results-background: white;
+    --AutoComplete_results-border: 1px solid gray;
+}
+
+
+
+.AutoComplete{
+    height: var(--AutoComplete-height);
+    line-height: var(--AutoComplete-height);
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+
+.AutoComplete_input{
+    display: block;
+    width: 100%;
+    height: var(--AutoComplete-height) ;
+    border: 1px solid blue;
+    background: lightblue;
+    box-sizing: border-box;
+}
+
+.AutoComplete_results{
+    background: var(--AutoComplete_results-background);
+    border: var(--AutoComplete_results-border);
+    z-index: 100;
+    position: absolute;
+    width: 100%;
+}
+
+.AutoComplete_results_list{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.AutoComplete_result{
+    background: lightgray;
+}

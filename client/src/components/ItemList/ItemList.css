@@ -1,18 +1,18 @@
 :root{
-    --List_item-height: 48px;
+    --ItemList_item-height: 48px;
 }
 
-.List{
+.ItemList{
     width: 100%;
 }
 
-.List_item{
-    height: var(--List_item-height);
-    line-height: var(--List_item-height);
+.ItemList_item{
+    height: var(--ItemList_item-height);
+    line-height: var(--ItemList_item-height);
     text-align: left;
     width: 100%;
 }
 
-.List_item:hover{
+.ItemList_item:hover, .ItemList_item--focused{
     background-color: #999999;
 }
