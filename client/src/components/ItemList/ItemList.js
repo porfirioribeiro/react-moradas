@@ -2,11 +2,11 @@ import React, { Component, PropTypes } from 'react';
 import cn from 'classnames';
 
 const defaultItemRenderer = (item, key) =>
-    (typeof item === 'string' ? item : item[key]);
+  (typeof item === 'string' ? item : item[key]);
 
 class ItemList extends Component {
 
-  renderItem=(item, i) => (
+  renderItem = (item, i) => (
     <div
       key={i}
       onClick={this.props.onItemClick && this.props.onItemClick.bind(this, i)}
@@ -15,16 +15,15 @@ class ItemList extends Component {
     >
       {this.props.itemRenderer(item, this.props.index)}
     </div>
-    );
+  );
 
   render() {
     const { dataSource, className, style } = this.props;
-
     return (
       <div className={cn('ItemList', className)} style={style}>
         {
-                    dataSource && dataSource.map(this.renderItem)
-                }
+          dataSource && dataSource.map(this.renderItem)
+        }
       </div>
     );
   }
@@ -39,10 +38,6 @@ ItemList.propTypes = {
   onItemPress: PropTypes.func,
   index: PropTypes.string,
   focusedItem: PropTypes.number,
-    // itemHeight: React.PropTypes.oneOfType([
-    //     React.PropTypes.string,
-    //     React.PropTypes.number,
-    // ])
 };
 
 ItemList.defaultProps = {

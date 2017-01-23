@@ -1,9 +1,10 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PureComponent, PropTypes } from 'react';
 import cn from 'classnames';
 import invariant from 'invariant';
+import _ from 'lodash';
 import ItemList from '../ItemList';
 
-class AutoComplete extends Component {
+class AutoComplete extends PureComponent {
 
 
   initialState = {
@@ -12,24 +13,47 @@ class AutoComplete extends Component {
     focusedItem: -1,
   };
 
-  state = { ...this.initialState };
+  state = {
+    options: [],
+    showResults: false,
+    focusedItem: -1,
+  };
 
   completeTimeout = 0;
+  inputHasFocus = false;
 
+  componentWillMount() {
+    invariant(!((!this.props.options && !this.props.loadOptions) ||
+      (this.props.options && this.props.loadOptions)),
+      'AutoComplete#props: You either have to specify options or loadOptions, and only one of them! controlled/uncontrolled');
+  }
 
-  doLoadCompletions = (q) => {
-    console.log('Logthis', q);
-    if (this.props.loadCompletions) {
-      const promise = this.props.loadCompletions(q);
+  componentWillReceiveProps({ options }) {
+    if (!_.isEqual(options, this.props.options)) {
+      this.setState({ showResults: this.inputHasFocus });
+      this.shouldUpdateOptions = true;
+    }
+  }
+
+  shouldComponentUpdate({ value }, nextState) {
+    return (!_.isEqual(value, this.props.value) ||
+      !_.isEqual(nextState, this.state) || this.shouldUpdateOptions || false);
+  }
+
+  queryInput = (q) => {
+    if (this.props.onQueryInput) this.props.onQueryInput(q);
+    if (this.props.loadOptions) {
+      const promise = this.props.loadOptions(q);
       invariant(promise instanceof Promise, 'AutoComplete prop loadCompletions should return Promise');
       promise.then((options) => {
-        this.setState({ options });
+        this.setState({ options, showResults: this.inputHasFocus, focusedItem: -1 });
       });
     }
   };
 
   selectByIndex(i) {
-    const item = this.state.options[i];
+    const options = this.props.options || this.state.options;
+    const item = options[i];
     const value = typeof item === 'string' ? item : item[this.props.index];
     if (this.props.onChange) this.props.onChange(value);
     if (this.props.onSelectItem) this.props.onSelectItem(item);
@@ -37,14 +61,14 @@ class AutoComplete extends Component {
   }
 
   handleInputKeyDown = (e) => {
-    console.log(e.keyCode, e.target.value);
+    const options = this.props.options || this.state.options;
     if (e.keyCode === 40)// Down
       this.setState({
-        focusedItem: this.state.focusedItem === this.state.options.length - 1 ? 0 : this.state.focusedItem + 1,
+        focusedItem: this.state.focusedItem === options.length - 1 ? 0 : this.state.focusedItem + 1,
       });
     if (e.keyCode === 38)// up
       this.setState({
-        focusedItem: this.state.focusedItem < 1 ? this.state.options.length - 1 : this.state.focusedItem - 1,
+        focusedItem: this.state.focusedItem < 1 ? options.length - 1 : this.state.focusedItem - 1,
       });
     if (e.keyCode === 27) {
       this.setState({ ...this.initialState });
@@ -52,35 +76,42 @@ class AutoComplete extends Component {
     if ((e.keyCode === 13 || e.keyCode === 9) && this.state.focusedItem > -1) {
       this.selectByIndex(this.state.focusedItem);
     }
-        // Todo other keys
+    // Todo other keys
   };
 
   handleInputChange = (e) => {
     const value = e.target.value;
     if (this.props.onChange) this.props.onChange(value);
     clearTimeout(this.completeTimeout);
-    this.completeTimeout = setTimeout(this.doLoadCompletions, 300, value);
+    this.completeTimeout = setTimeout(this.queryInput, 300, value);
   };
 
-  handleInputFocus = () => this.setState({ showResults: true });
+  handleInputFocus = () => {
+    this.inputHasFocus = true;
+  };
   handleInputBlur = () => {
-    console.log('blut', this.preventBlur);
-    if (!this.preventBlur)
+    if (!this.preventBlur) {
+      this.inputHasFocus = false;
       this.setState({ showResults: false });
-            // setTimeout(this.setState.bind(this),1, {showResults: false});
+    }
   };
 
   handleItemClick = (i) => {
-    this.selectByIndex(i);
     this.preventBlur = false;
+    this.selectByIndex(i);
   };
 
-  handleItemPress = () => { this.preventBlur = true; };
+  handleItemPress = () => {
+    this.preventBlur = true;
+  };
 
   render() {
-    // eslint-disable-next-line no-unused-vars
-    const { className, onChange, onSelectItem, loadCompletions, index, ...props } = this.props;
-        // console.log('render', this.state.focusedItem);
+    /* eslint-disable no-unused-vars*/
+    const {
+      className, onChange, onSelectItem, loadOptions,
+      optionRenderer, onQueryInput, options, index, ...props
+    } = this.props;
+    const dataSource = options || this.state.options;
     return (
       <div className={cn('AutoComplete', className)}>
         <input
@@ -91,14 +122,16 @@ class AutoComplete extends Component {
           onBlur={this.handleInputBlur}
         />
         {
-                    this.state.showResults && (
-                    <div className="AutoComplete_results">
-                      <ItemList
-                        dataSource={this.state.options} onItemClick={this.handleItemClick} onItemPress={this.handleItemPress}
-                        index={index} focusedItem={this.state.focusedItem}
-                      />
-                    </div>)
-                }
+          this.state.showResults && (dataSource.length > 0) && (
+            <div className="AutoComplete_results">
+              <ItemList
+                className="AutoComplete_results_list"
+                dataSource={dataSource}
+                onItemClick={this.handleItemClick} onItemPress={this.handleItemPress}
+                index={index} focusedItem={this.state.focusedItem} itemRenderer={optionRenderer}
+              />
+            </div>)
+        }
       </div>);
   }
 }
@@ -109,7 +142,13 @@ AutoComplete.propTypes = {
   index: PropTypes.string,
   onChange: PropTypes.func,
   onSelectItem: PropTypes.func,
-  loadCompletions: PropTypes.func,
+  optionRenderer: PropTypes.func,
+  // uncontrolled mode, AutoComplete handles options inside,
+  // you just need to add a load completions function
+  loadOptions: PropTypes.func,
+  // controlled mode
+  options: PropTypes.array,
+  onQueryInput: PropTypes.func,
 };
 
 AutoComplete.defaultProps = {

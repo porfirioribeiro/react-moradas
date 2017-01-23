@@ -30,14 +30,18 @@
     z-index: 100;
     position: absolute;
     width: 100%;
+    overflow: auto;
+    cursor: pointer;
 }
 
 .AutoComplete_results_list{
-    list-style: none;
-    padding: 0;
-    margin: 0;
+
+}
+.AutoComplete_results_list .ItemList_item{
+    padding: 0 8px;
+    width: calc( 100% - 16px );
 }
 
 .AutoComplete_result{
-    background: lightgray;
+
 }

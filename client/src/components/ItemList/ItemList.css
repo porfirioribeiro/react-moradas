@@ -4,13 +4,15 @@
 
 .ItemList{
     width: 100%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 .ItemList_item{
     height: var(--ItemList_item-height);
     line-height: var(--ItemList_item-height);
     text-align: left;
-    width: 100%;
 }
 
 .ItemList_item:hover, .ItemList_item--focused{
