@@ -21,10 +21,10 @@
 }
 
 .Address-renderer--primary{
-    line-height: calc( var(--ItemList_item-height) / 3 * 2);
+    line-height: calc( var(--List_item-height) / 3 * 2);
 }
 
 .Address-renderer--secondary{
-    line-height: calc( var(--ItemList_item-height) / 3 );
+    line-height: calc( var(--List_item-height) / 3 );
     font-size: 70%;
 }

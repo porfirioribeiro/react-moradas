@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import AutoComplete from './components/AutoComplete';
 import Card from './components/Card';
-import List from './components/ItemList';
+import {List, ItemList} from './components/List';
 import './NewApp.css';
 
 import { fetchJSON } from './utils/ajax';
+// import AddressSocket from './utils/AddressSocket';
 
 const parishRenderer = opt => (
   <div className="Address-renderer">
@@ -67,6 +68,11 @@ export default class NewApp extends Component {
   searchDistrictControlled = q => fetchJSON(`search/simple?district=${q}`)
     .then(controlledDistrictOptions => this.setState({ controlledDistrictOptions }));
 
+  componentDidMount() {
+    // const addressSocket = new AddressSocket();
+    // startAddressSocket();
+  }
+
   render() {
     return (<div className="app App_auto-completes">
       <Card>
@@ -128,13 +134,13 @@ export default class NewApp extends Component {
         </div>
       </Card>
       <Card className="Card--address">
-        <List
+        <ItemList
           dataSource={this.state.controlledParishOptions}
           itemRenderer={parishRenderer} onItemClick={console.log}
         />
       </Card>
       <Card>
-        <List dataSource={[{ text: 'asdsd' }, { text: 'aSsdsfrfrg' }]} />
+        <ItemList dataSource={[{ text: 'asdsd' }, { text: 'aSsdsfrfrg' }]} />
       </Card>
     </div>);
   }
