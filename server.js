@@ -1,10 +1,13 @@
-/* eslint-disable no-plusplus */
+/* eslint-disable no-plusplus,no-param-reassign */
+const http = require('http');
 const express = require('express');
 const cors = require('cors');
 const fs = require('fs');
+const WebSocketServer = require('ws').Server;
 
 const app = express();
 
+const server = http.createServer(app);
 
 const port = process.env.PORT || 8080;
 const host = process.env.IP || '0.0.0.0';
@@ -122,7 +125,24 @@ app.get('/search/simple', (req, res) => {
     // res.json([]);
 });
 
+const wss = new WebSocketServer({ server, path: '/ws' });
 
-const server = app.listen(port, host, () => {
+wss.on('connection', (ws) => {
+  console.log('ws connected');
+  ws.onmessage = ({ data }) => {
+    const message = JSON.parse(data);
+    switch (message.type) {
+      case 'search':
+        ws.send(JSON.stringify({
+          type: 'search',
+          data: searchBy(message.data.query, message.data.by, message.data.limit),
+        }));
+    }
+    console.log('ws message', message.type);
+  };
+  ws.send(JSON.stringify({ message: 'The server says this' }));
+});
+
+server.listen(port, host, () => {
   console.log('Example app listening at http://%s:%s', server.address().address, server.address().port);
 });
