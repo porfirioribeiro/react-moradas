@@ -2,10 +2,9 @@ import React, { PureComponent, PropTypes } from 'react';
 import cn from 'classnames';
 import invariant from 'invariant';
 import _ from 'lodash';
-import ItemList from '../ItemList';
+import { ItemList } from '../List';
 
 class AutoComplete extends PureComponent {
-
 
   initialState = {
     options: [],
@@ -46,7 +45,7 @@ class AutoComplete extends PureComponent {
       const promise = this.props.loadOptions(q);
       invariant(promise instanceof Promise, 'AutoComplete prop loadCompletions should return Promise');
       promise.then((options) => {
-        this.setState({ options, showResults: this.inputHasFocus, focusedItem: -1 });
+        this.setState({ options, showResults: this.inputHasFocus, focusedIndex: -1 });
       });
     }
   };
@@ -64,19 +63,18 @@ class AutoComplete extends PureComponent {
     const options = this.props.options || this.state.options;
     if (e.keyCode === 40)// Down
       this.setState({
-        focusedItem: this.state.focusedItem === options.length - 1 ? 0 : this.state.focusedItem + 1,
+        focusedIndex: this.state.focusedIndex === options.length - 1 ? 0 : this.state.focusedIndex + 1,
       });
     if (e.keyCode === 38)// up
       this.setState({
-        focusedItem: this.state.focusedItem < 1 ? options.length - 1 : this.state.focusedItem - 1,
+        focusedIndex: this.state.focusedIndex < 1 ? options.length - 1 : this.state.focusedIndex - 1,
       });
     if (e.keyCode === 27) {
       this.setState({ ...this.initialState });
     }
-    if ((e.keyCode === 13 || e.keyCode === 9) && this.state.focusedItem > -1) {
-      this.selectByIndex(this.state.focusedItem);
+    if ((e.keyCode === 13 || e.keyCode === 9) && this.state.focusedIndex > -1) {
+      this.selectByIndex(this.state.focusedIndex);
     }
-    // Todo other keys
   };
 
   handleInputChange = (e) => {
@@ -128,7 +126,7 @@ class AutoComplete extends PureComponent {
                 className="AutoComplete_results_list"
                 dataSource={dataSource}
                 onItemClick={this.handleItemClick} onItemPress={this.handleItemPress}
-                index={index} focusedItem={this.state.focusedItem} itemRenderer={optionRenderer}
+                index={index} focusedIndex={this.state.focusedIndex} itemRenderer={optionRenderer}
               />
             </div>)
         }
@@ -147,7 +145,10 @@ AutoComplete.propTypes = {
   // you just need to add a load completions function
   loadOptions: PropTypes.func,
   // controlled mode
-  options: PropTypes.array,
+  options: PropTypes.oneOfType([
+    PropTypes.array,
+    PropTypes.object,
+  ]),
   onQueryInput: PropTypes.func,
 };
 

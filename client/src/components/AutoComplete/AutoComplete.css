@@ -37,7 +37,7 @@
 .AutoComplete_results_list{
 
 }
-.AutoComplete_results_list .ItemList_item{
+.AutoComplete_results_list .List_item{
     padding: 0 8px;
     width: calc( 100% - 16px );
 }

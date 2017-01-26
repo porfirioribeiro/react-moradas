@@ -1,0 +1,20 @@
+:root{
+    --List_item-height: 48px;
+}
+
+.List{
+    width: 100%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.ListItem{
+    height: var(--List_item-height);
+    line-height: var(--List_item-height);
+    text-align: left;
+}
+
+.ListItem:hover, .ListItem--focused{
+    background-color: #999999;
+}
