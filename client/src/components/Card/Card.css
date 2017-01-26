@@ -1,0 +1,20 @@
+
+:root {
+    --Card-background: white;
+    --Card-border: 1px solid gray;
+    --Card-shadow: 0 0 5px 0 rgba(64, 64, 64, 0.52);
+}
+
+.Card {
+    background: var(--Card-background);
+    /*border: var(--Card-border);*/
+    box-shadow: var(--Card-shadow);
+    margin: 16px;
+    /*padding: 16px;*/
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+
+    overflow-x: inherit;
+    overflow-y: inherit;
+}

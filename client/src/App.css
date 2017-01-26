@@ -23,7 +23,7 @@
   to { transform: rotate(360deg); }
 }
 
-.App-selects{
+.App-selects, .App_auto-completes{
     display: flex;
     max-width: 600px;
     margin: 0 auto;
@@ -33,7 +33,7 @@
     justify-content: center;
 }
 
-.Select_address{
+.Select_address, .App_auto-complete{
     width: 200px;
     margin: auto;
 
@@ -42,3 +42,4 @@
 .Select_search{
     width: 400px;
 }
+

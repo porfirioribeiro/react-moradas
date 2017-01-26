@@ -1,0 +1,47 @@
+
+:root{
+    --AutoComplete-height: 32px;
+    --AutoComplete_results-background: white;
+    --AutoComplete_results-border: 1px solid gray;
+}
+
+
+
+.AutoComplete{
+    height: var(--AutoComplete-height);
+    line-height: var(--AutoComplete-height);
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+
+.AutoComplete_input{
+    display: block;
+    width: 100%;
+    height: var(--AutoComplete-height) ;
+    border: 1px solid blue;
+    background: lightblue;
+    box-sizing: border-box;
+}
+
+.AutoComplete_results{
+    background: var(--AutoComplete_results-background);
+    border: var(--AutoComplete_results-border);
+    z-index: 100;
+    position: absolute;
+    width: 100%;
+    overflow: auto;
+    cursor: pointer;
+}
+
+.AutoComplete_results_list{
+
+}
+.AutoComplete_results_list .List_item{
+    padding: 0 8px;
+    width: calc( 100% - 16px );
+}
+
+.AutoComplete_result{
+
+}

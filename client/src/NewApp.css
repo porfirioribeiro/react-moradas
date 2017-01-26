@@ -1,0 +1,30 @@
+.App_auto-completes{
+    max-width: 610px;
+    margin: 0 auto;
+
+    /* Then we define how is distributed the remaining space */
+}
+
+.App_auto-complete{
+    margin: 8px;
+    width: calc(100% / 3 - 24px)
+
+}
+
+.Card--address{
+    width: 120px;
+    overflow-x: auto;
+}
+
+.Address-renderer{
+
+}
+
+.Address-renderer--primary{
+    line-height: calc( var(--List_item-height) / 3 * 2);
+}
+
+.Address-renderer--secondary{
+    line-height: calc( var(--List_item-height) / 3 );
+    font-size: 70%;
+}
